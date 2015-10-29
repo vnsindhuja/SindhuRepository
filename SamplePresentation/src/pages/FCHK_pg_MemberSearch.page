@@ -1,0 +1,56 @@
+<apex:page Controller="FCHK_cls_MemberSearchctrl">
+ <apex:form >
+        <apex:PageBlock mode="edit" > 
+               
+        <apex:pageblockSection id="searchBlockSection">
+            <apex:pageBlockSectionItem id="searchBlockSectionItem">
+            <apex:panelGroup >
+           
+                    <br> <apex:outputLabel >Email</apex:outputLabel></br>                    
+                     
+                     
+                                      
+                    <br> <apex:outputLabel >Home Phone No.</apex:outputLabel>   </br>                
+                  
+                     
+                                     
+                     <apex:outputLabel >Mobile No.</apex:outputLabel>                 
+                  
+            
+           
+              
+                     <apex:inputtext id="id" value="{!searchEmail}"></apex:inputtext>&nbsp;&nbsp;&nbsp; 
+                   
+              
+                      <apex:inputtext id="HomePhoneid" value="{!searchHomePhone}"></apex:inputtext>&nbsp;&nbsp;&nbsp;                     
+                
+         
+                      <apex:inputtext id="Mobileid" value="{!searchMobileNo}"></apex:inputtext>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+                     
+                     <apex:commandButton Id="btnSearch" action="{!search}"  status="status" title="Search" value="Search"></apex:commandButton><br/>
+                     
+               
+              
+             
+                                                
+                     <apex:outputLabel value="Name: " rendered="{!bRender}"></apex:outputLabel>
+                        
+                </apex:panelGroup>
+                    
+            </apex:pageBlockSectionItem>
+         </apex:pageblockSection>
+         
+        <!-- apex:actionStatus id="status" startText="Searching... please wait..."/ -->
+ 
+
+
+        
+        <apex:pageblockTable value="{!accountList}" var="a">  
+       <apex:column > 
+      <apex:outputlink value="{!a.Name}"></apex:outputlink>  
+     </apex:column>       
+    </apex:pageBlockTable> 
+    
+   </apex:pageBlock>   
+  </apex:form>  
+ </apex:page>

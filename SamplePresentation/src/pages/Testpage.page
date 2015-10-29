@@ -1,0 +1,17 @@
+<apex:page >
+<script>
+	function closewindow(){
+		alert('hi');
+		window.close();
+	}
+
+</script>
+
+<apex:form >
+	<apex:commandButton value="Close Window" onclick="closewindow();"/>
+</apex:form>
+<!-- Begin Default Content REMOVE THIS -->
+<h1>Congratulations</h1>
+This is your new Page
+<!-- End Default Content REMOVE THIS -->
+</apex:page>

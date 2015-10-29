@@ -1,0 +1,169 @@
+<apex:page controller="FCHK_class_MemberSearchctrl"  sidebar="false"  id="pg" tabstyle="Account">
+<!-- <apex:includeScript value="/soap/ajax/29.0/connection.js"/> --> 
+  <!--<div id="InnternalDiv" style="height:1000px;"> -->
+    <script type="text/javascript">
+        var __sfdcSessionId = '{!GETSESSIONID()}';
+    </script>
+    <script src="/soap/ajax/34.0/connection.js" type="text/javascript">
+    </script>
+    <script src="/soap/ajax/34.0/apex.js" type="text/javascript">
+    </script>   
+  <script type="text/javascript">
+      function submitAlert(){
+       window.scrollTo(0,70);
+      
+      /*   var inserted=document.getElementById('pg:fm:insertBlock').value;
+         var updated=document.getElementById('pg:fm:updateBlock').value;
+         if(inserted=='Yes'){
+            alert('Account is Successfully Created.');
+            //window.open('/apex/FCHK_page_MemberSearch','_self');
+            top.location.href=top.location.href;
+         }
+         else if(updated=='Yes'){
+            alert('Account is Successfully Updated.');
+            //window.open('/apex/FCHK_page_MemberSearch','_self');
+            top.location.href=top.location.href;
+         }*/
+      }
+      function validate(elementId,elementValue,fieldName){    
+            try{                
+                if(elementValue!=''){
+                    var query = "SELECT Id,Name from Account where "+fieldName+"='"+elementValue+"'"; 
+                    
+                    var records = sforce.connection.query(query); 
+                    var records1 = records.getArray('records');                     
+                    if(records1.length > 0){ 
+                            document.getElementById(elementId).style.backgroundColor = "#DD3448";
+                    }
+                    else{ 
+                            /*alert('There is no Account');*/
+                            document.getElementById(elementId).style.backgroundColor = "#00FF99";
+                    } 
+              }
+              else{
+                document.getElementById(elementId).style.backgroundColor ="";
+              }
+            } 
+            catch(e){ 
+                alert('An Error has Occured. Error:' +e); 
+            }
+     }
+  </script>
+  <apex:form id="fm">
+  <apex:inputHidden value="{!insertBlock}" id="insertBlock"/>
+  <apex:inputHidden value="{!updateBlock}" id="updateBlock"/>
+   <apex:pagemessages id="errmsg"/> 
+     <apex:pageblock title="Optimel Member Info" mode="edit" id="pb">
+       <apex:pageBlockButtons location="bottom" >
+     <!-- <apex:commandButton action="{!SearchRecords}" value="Search" oncomplete="submitAlert();"  rerender="renderBlock,errmsg" status="status"/> -->
+     <apex:commandButton action="{!SearchRecords}" value="Save" oncomplete="submitAlert();"  rerender="pb,errmsg" status="status"/>
+     <!-- <apex:commandButton action="{!CreateRecords}" value="Create"  oncomplete="submitAlert();" rerender="insertBlock,errmsg"/> -->
+      </apex:pageBlockButtons>
+
+       <apex:pageBlockSection title="Account Information" id="pbs" >
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="First Name"/>
+            <apex:inputText value="{!actFirstName}"/>
+        </apex:pageBlockSectionItem>
+       <!--  <apex:pageBlockSectionItem id="pbsItem">
+            <apex:outputLabel value="Last Name"/>
+            <apex:outputPanel layout="block" styleClass="requiredInput" id="op">
+                    <div class="requiredBlock"></div>
+                    <apex:inputText value="{!actLastName}" required="true"/>
+            </apex:outputPanel>
+        </apex:pageBlockSectionItem> -->
+        <apex:inputField value="{!conObj.lastName}"/>
+        <apex:inputField value="{!actObj.personBirthdate}"/>
+        <apex:inputField value="{!actObj.personEmail}" id="email" onblur="validate('{!$Component.email}',this.value,'PersonEmail');"/>
+        <apex:inputField value="{!actObj.personMobilePhone}" id="phone" onblur="validate('{!$Component.phone}',this.value,'PersonMobilePhone');"/>
+        <apex:inputField value="{!actObj.personHomePhone}" id="homephone" onblur="validate('{!$Component.homephone}',this.value,'PersonHomePhone');"/>
+        <apex:inputField value="{!actObj.FCHK_Registration_Type__c}"/>
+        <apex:inputField value="{!actObj.Gender__c}"/>
+        <apex:inputField value="{!actObj.Recruitment_Source__c}"/>
+        
+     </apex:pageBlockSection> 
+     
+     <apex:pageBlockSection title="Billing Address">
+        <apex:inputField value="{!actObj.FCHK_Chinese_Address__c}"/>
+        <apex:inputField value="{!actObj.FCHK_Shipping_Address__c}"/>
+        <apex:inputField value="{!actObj.FCHK_Flat__c}"/><br/>
+        <apex:inputField value="{!actObj.FCHK_Floor__c}"/><br/>
+        <apex:inputField value="{!actObj.FCHK_Block__c}"/><br/>
+        <apex:inputField value="{!actObj.FCHK_Building__c}"/><br/>
+        <apex:inputField value="{!actObj.FCHK_Estate__c}"/><br/>
+        <apex:inputField value="{!actObj.FCHK_Street__c}"/><br/>
+        <apex:inputField value="{!actObj.FCHK_Territory__c}"/><br/>
+        <apex:inputField value="{!actObj.FCHK_District__c}"/>
+        <apex:inputField value="{!actObj.FCHK_Delivery_Address__c}"/>
+     </apex:pageBlockSection>
+     
+     <apex:pageBlockSection title="Do not communicate via">
+        <apex:inputField value="{!actObj.FCHK_Reject_SMS__c}"/>
+        <apex:inputField value="{!actObj.PersonHasOptedOutOfEmail}"/>
+        <apex:inputField value="{!actObj.FCHK_Reject_DirectMail__c}"/>
+        <apex:inputField value="{!actObj.PersonDoNotCall}"/>
+     </apex:pageBlockSection>
+     
+     <apex:pageBlockSection title="Reason to purchase">
+        <apex:inputField value="{!actObj.FCHK_User_of_Optimel__c}"/>
+     </apex:pageBlockSection>
+     
+    <!--  <apex:pageBlockSection title="HCP Member Details">
+        <apex:inputField value="{!actObj.FCHK_HCP_Member__c}"/>
+        <apex:inputField value="{!actObj.FCHK_HCP_Member_Name__c}"/>
+        <apex:inputField value="{!actObj.Hospital_Clinic_MCHC_Name__c}"/>
+        <apex:inputField value="{!actObj.FCHK_Member_Type__c}"/>
+     </apex:pageBlockSection> -->
+     
+     <apex:pageBlockSection title="Referee Details">
+        <apex:inputField value="{!actObj.FCHK_Referred_By__c}"/>
+        <apex:inputField value="{!actObj.FCHK_Referred_On__c}"/>
+        <apex:inputField value="{!actObj.Hospital_Clinic_MCHC_Name__c}"/>
+     </apex:pageBlockSection>
+     
+     <apex:pageBlockSection title="Family Member">
+        <apex:inputField value="{!actObj.FCHK_FM1_First_Name__c}"/>
+        <apex:inputField value="{!actObj.FCHK_FM1_Last_Name__c}"/>
+        <apex:inputField value="{!actObj.FCHK_FM1_Gender__c}"/>
+        <apex:inputField value="{!actObj.FCHK_FM1_DOB__c}"/>
+        <apex:inputField value="{!actObj.FCHK_FM1_Relationship_With_Member__c}"/>
+     </apex:pageBlockSection>
+     
+     <apex:pageBlockSection title="Health Test Card">
+        <apex:inputField value="{!actObj.FCHK_Grip_Test__c}"/>
+        <apex:inputField value="{!actObj.FCHK_Bone_Test__c}"/>
+        <apex:inputField value="{!actObj.FCHK_Systolic_BP__c}"/>
+        <apex:inputField value="{!actObj.FCHK_Diastolic_BP__c}"/>
+     
+     </apex:pageBlockSection>
+         
+   </apex:pageblock>
+
+   
+    <!-- <apex:actionStatus id="status">
+      <apex:facet name="start" >
+        <center>
+            <img src="/img/loading.gif"/>                        
+        </center>
+      </apex:facet>
+      <apex:facet name="stop" >
+          <apex:outputPanel id="renderBlock" >
+             <apex:pagemessages id="errmsg"/> 
+             <apex:pageblock rendered="{!renderBlock}">
+                  <apex:pageblockTable value="{!accountList}" var="accountObj"  >
+                      <apex:column headerValue="First Name">
+                          <apex:outputLink value="{!accountObj.Id}">{!accountObj.FirstName}</apex:outputLink>
+                      </apex:column>
+                      <apex:column value="{!accountObj.LastName}"/>
+                      <apex:column value="{!accountObj.PersonEmail}"/>
+                      <apex:column value="{!accountObj.PersonMobilePhone}"/>
+                      <apex:column value="{!accountObj.PersonHomePhone}"/>
+                     
+                  </apex:pageBlockTable>
+             </apex:pageblock>
+           </apex:outputPanel>
+     </apex:facet>
+    </apex:actionStatus> -->  
+  </apex:form>
+   <!--</div>-->
+</apex:page>

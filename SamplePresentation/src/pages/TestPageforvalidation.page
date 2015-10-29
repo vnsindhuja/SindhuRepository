@@ -1,0 +1,50 @@
+<apex:page controller="Validationcls">
+	 <script type="text/javascript">
+		var __sfdcSessionId = '{!GETSESSIONID()}';
+  </script>
+	<script src="/soap/ajax/34.0/connection.js" type="text/javascript">
+	</script>
+	<script src="/soap/ajax/34.0/apex.js" type="text/javascript">
+	</script>	
+	<script type="text/javascript">
+	  
+	  function validate(elementId,elementValue,fieldName){	  
+			try{ 
+				//var __sfdcSessionId = '{!GETSESSIONID()}';
+				/*alert('Id :'+elementId);
+				alert('elementValue : '+elementValue);*/
+				if(elementValue!=''){
+					var query = "SELECT Id,Name from Account where "+fieldName+"='"+elementValue+"'"; 
+					/*alert(query);*/
+					var records = sforce.connection.query(query); 
+					var records1 = records.getArray('records'); 
+					/*alert(records); 
+					var accountNames = ''; 
+					for(var i=0;i<records1.length;i++){ 
+					accountNames = accountNames + records1[i].Name + ','; 
+					} 
+					alert(accountNames); */
+					if(records1.length > 0){ 
+							document.getElementById(elementId).style.backgroundColor = "Red";
+					}
+					else{ 
+							/*alert('There is no Account');*/
+							document.getElementById(elementId).style.backgroundColor = "Green";
+					} 
+			  }
+			} 
+			catch(e){ 
+				alert('An Error has Occured. Error:' +e); 
+			}
+	 }
+	</script>
+	<apex:form id="fm">
+		<apex:pageBlock id="pb">
+			<apex:pageBlockSection id="pbs">
+				<apex:inputField value="{!actObj.PersonMobilePhone}" id="phone" onblur="validate('{!$Component.phone}',this.value,'PersonMobilePhone');"/>
+				<apex:inputField value="{!actObj.PersonHomePhone}" id="homephone" onblur="validate('{!$Component.homephone}',this.value,'PersonHomePhone');"/>
+				<apex:inputField value="{!actObj.PersonEmail}" id="email" onblur="validate('{!$Component.email}',this.value,'PersonEmail');"/>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>
